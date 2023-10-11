@@ -1,9 +1,9 @@
 package main
 
 import (
-	"net/http"
-
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func setupRouter() *gin.Engine {
@@ -29,8 +29,33 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-func main() {
-	r := setupRouter()
+func lengthOfLongestSubstring(s string) int {
+	subString := make(map[rune]int)
+	longest := 0
 
-	r.Run(":8080")
+	for i, v := range s {
+		fmt.Println("Loop:", v)
+		if j, ok := subString[v]; ok {
+			if len(subString) > longest {
+				longest = len(subString)
+			}
+			for k, s := range subString {
+				if s <= j {
+					delete(subString, k)
+				}
+			}
+			fmt.Println("Emptied sub", subString)
+		}
+		subString[v] = i
+	}
+
+	if len(subString) > longest {
+		longest = len(subString)
+	}
+
+	return longest
+}
+
+func main() {
+	fmt.Println(lengthOfLongestSubstring("dvdf"))
 }
